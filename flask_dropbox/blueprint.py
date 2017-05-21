@@ -32,7 +32,7 @@ class DropboxBlueprint(Blueprint):
         # Add URLs to the blueprint
         url_map = {'/callback': callback, '/logout': logout}
 
-        for url, view_func in url_map.items():
+        for url, view_func in list(url_map.items()):
             self.add_url_rule(url, view_func=view_func)
 
         if not BABEL_SUPPORTED:

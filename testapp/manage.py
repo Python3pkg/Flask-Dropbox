@@ -2,7 +2,7 @@
 
 import os
 
-from app import manager
+from .app import manager
 
 
 DIRNAME = os.path.abspath(os.path.dirname(__file__))
@@ -21,7 +21,7 @@ def settings_local():
     filename = rel('settings_local.py')
 
     if os.path.isfile(filename):
-        print('ERROR: {0!r} already exists, exit...'.format(filename))
+        print(('ERROR: {0!r} already exists, exit...'.format(filename)))
         return
 
     with open(filename, 'w+') as handler:
@@ -30,7 +30,7 @@ def settings_local():
             "DROPBOX_SECRET = '{0}'\n".format(decrypt(DROPBOX_SECRET))
         )
 
-    print('Local settings file created at {0!r}.'.format(filename))
+    print(('Local settings file created at {0!r}.'.format(filename)))
 
 
 if __name__ == '__main__':

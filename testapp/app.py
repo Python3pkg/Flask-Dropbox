@@ -6,7 +6,7 @@ from flask.ext.dropbox import Dropbox
 from flask.ext.lazyviews import LazyViews
 from flask.ext.script import Manager
 
-import settings
+from . import settings
 
 
 # Initialize and configure Flask app

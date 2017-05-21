@@ -54,7 +54,7 @@ class Dropbox(object):
             if self.DROPBOX_CACHE_STORAGE == 'self':
                 return self
             return (import_string(self.DROPBOX_CACHE_STORAGE)
-                    if isinstance(self.DROPBOX_CACHE_STORAGE, basestring)
+                    if isinstance(self.DROPBOX_CACHE_STORAGE, str)
                     else self.DROPBOX_CACHE_STORAGE)
         return g
 
@@ -191,5 +191,5 @@ if hasattr(OAuthToken, '__slots__'):
                                for key in instance.__slots__])
     OAuthToken.__setstate__ = \
         lambda instance, data: [setattr(instance, key, value)
-                                for key, value in data.iteritems()
+                                for key, value in data.items()
                                 if key in instance.__slots__]

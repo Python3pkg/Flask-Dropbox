@@ -1,12 +1,12 @@
 import copy
 
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
 import unittest
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 # Simple manipulation to use ``unittest2`` if current Python version is
 # less than 2.7
@@ -14,9 +14,9 @@ if not hasattr(unittest.TestCase, 'assertIn'):
     import unittest2 as unittest
 
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 from random import choice
 from string import digits, letters
@@ -149,7 +149,7 @@ class TestDropboxUtils(TestCase):
 
     def test_dropbox_callback_url(self):
         callback_url = 'http://localhost/dropbox-callback'
-        quoted_url = urllib.urlencode({'oauth_callback': callback_url})
+        quoted_url = urllib.parse.urlencode({'oauth_callback': callback_url})
 
         app.config['DROPBOX_CALLBACK_URL'] = callback_url
         dropbox_obj = Dropbox(app)
@@ -208,7 +208,7 @@ class TestDropboxUtils(TestCase):
     def test_dropbox_login_url(self):
         with app.test_request_context():
             callback_url = url_for('dropbox.callback', _external=True)
-            quoted_url = urllib.urlencode({'oauth_callback': callback_url})
+            quoted_url = urllib.parse.urlencode({'oauth_callback': callback_url})
 
             first_url = dropbox.login_url
             self.assertIn(quoted_url, first_url)
@@ -232,8 +232,7 @@ class TestDropboxUtils(TestCase):
         self.assertIn('dropbox', app.blueprints)
         old_blueprint = app.blueprints['dropbox']
 
-        rules = filter(lambda rule: rule.endpoint.startswith('dropbox.'),
-                       app.url_map._rules)
+        rules = [rule for rule in app.url_map._rules if rule.endpoint.startswith('dropbox.')]
         self.assertEqual(len(rules), 2)
 
         dropbox_obj = Dropbox(app)
@@ -244,8 +243,7 @@ class TestDropboxUtils(TestCase):
         del app.blueprints['dropbox']
         dropbox_obj.register_blueprint(url_prefix='/dbox')
 
-        rules = filter(lambda rule: rule.endpoint.startswith('dropbox.'),
-                       app.url_map._rules)
+        rules = [rule for rule in app.url_map._rules if rule.endpoint.startswith('dropbox.')]
         self.assertEqual(len(rules), 4)
 
         self.assertIn('dropbox', app.blueprints)

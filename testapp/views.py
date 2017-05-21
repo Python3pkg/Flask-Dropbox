@@ -86,7 +86,7 @@ def session_dump():
     items = list(session.items())
 
     response = make_response(
-        u'\n'.join([u'%s => %r' % (key, value) for key, value in items])
+        '\n'.join(['%s => %r' % (key, value) for key, value in items])
     )
     response.mimetype = 'text/plain'
 
